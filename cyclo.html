@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYCLO - 将骑行变成有趣的竞争冒险</title>
+    <style>
+        :root {
+            --primary: #27ae60;
+            --primary-dark: #219653;
+            --secondary: #f39c12;
+            --light: #f8f9fa;
+            --dark: #333;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* 主横幅区域 */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 180px 0 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .hero .cta-button {
+            font-size: 1.1rem;
+            padding: 12px 30px;
+        }
+
+        /* 问题与解决方案 */
+        .problem-solution {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .problem-solution-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .problem, .solution {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .problem h3, .solution h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .problem {
+            border-right: 1px solid #eee;
+        }
+
+        .problem ul {
+            list-style: none;
+        }
+
+        .problem li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .problem li:before {
+            content: "✗";
+            color: #e74c3c;
+            position: absolute;
+            left: 0;
+        }
+
+        .solution ul {
+            list-style: none;
+        }
+
+        .solution li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .solution li:before {
+            content: "✓";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+        }
+
+        /* 工作原理 */
+        .how-it-works {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .step h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        /* 关于我们 */
+        .about {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* 搜索功能 */
+        .search-section {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+
+        .search-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-filters {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-item {
+            margin-right: 20px;
+            margin-bottom: 15px;
+        }
+
+        .filter-item label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .filter-item input {
+            margin-right: 8px;
+        }
+
+        .add-record {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .problem, .solution {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">CYCLO</div>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#how-it-works">工作原理</a></li>
+                <li><a href="#about">关于我们</a></li>
+                <li><a href="#search">搜索活动</a></li>
+            </ul>
+            <button class="cta-button">加入冒险</button>
+        </nav>
+    </div>
+</header>
+
+<!-- 主横幅区域 -->
+<section class="hero" id="home">
+    <div class="container">
+        <h1>CYCLO-您的骑行冒险乐园</h1>
+        <p>将您的骑行之旅转化为与骑友们一起的有趣、竞争性冒险体验</p>
+        <button class="cta-button">立即加入</button>
+    </div>
+</section>
+
+<!-- 问题与解决方案 -->
+<section class="problem-solution">
+    <div class="container">
+        <div class="section-title">
+            <h2>独自骑行太孤单？缺乏动力？</h2>
+            <p>我们解决了骑行爱好者面临的常见问题，让骑行变得更有趣、更具社交性</p>
+        </div>
+        <div class="problem-solution-content">
+            <div class="problem">
+                <h3>传统骑行的问题</h3>
+                <ul>
+                    <li>独自骑行缺乏动力和持续性</li>
+                    <li>难以找到志同道合的骑友</li>
+                    <li>路线单调，缺乏新鲜感</li>
+                    <li>没有明确目标和成就感</li>
+                </ul>
+            </div>
+            <div class="solution">
+                <h3>我们的解决方案</h3>
+                <ul>
+                    <li>将骑行转化为有趣的游戏化体验</li>
+                    <li>与朋友或社区成员竞争挑战</li>
+                    <li>探索新路线，解锁成就徽章</li>
+                    <li>跟踪进度，分享成就</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 工作原理 -->
+<section class="how-it-works" id="how-it-works">
+    <div class="container">
+        <div class="section-title">
+            <h2>工作原理</h2>
+            <p>只需简单三步，开启您的骑行冒险之旅</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-icon">1</div>
+                <h3>创建账户</h3>
+                <p>快速注册，设置您的骑行偏好和目标</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <h3>加入挑战</h3>
+                <p>选择您感兴趣的骑行挑战或创建自己的挑战</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <h3>开始骑行</h3>
+                <p>追踪您的进度，与朋友竞争，解锁成就</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 关于我们 -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="section-title">
+            <h2>关于我们</h2>
+            <p>我们的使命是让骑行变得更有趣、更具社交性</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <p>我们是一群热爱骑行的开发者，发现许多骑行爱好者因为缺乏动力和社交元素而放弃了这项有益身心的运动。</p>
+                <p>于是，我们创建了骑行冒险乐园，将游戏化元素引入骑行体验，让每一次骑行都变成一次有趣的冒险。</p>
+                <p>我们的平台不仅帮助您保持运动习惯，还能结识志同道合的朋友，一起探索新的路线，挑战自我。</p>
+                <button class="cta-button" style="margin-top: 20px;">了解更多</button>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="骑行团队">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 搜索功能 -->
+<section class="search-section" id="search">
+    <div class="container">
+        <div class="section-title">
+            <h2>搜索骑行活动</h2>
+            <p>找到适合您的骑行挑战和活动</p>
+        </div>
+        <div class="search-box">
+            <div class="search-title">
+                <h3>筛选条件</h3>
+            </div>
+            <div class="search-filters">
+                <div class="filter-item">
+                    <label>
+                        <input type="checkbox"> 距离挑战
+                    </label>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <input type="checkbox"> 速度挑战
+                    </label>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <input type="checkbox"> 海拔挑战
+                    </label>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <input type="checkbox"> 团队骑行
+                    </label>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <input type="checkbox"> 单人挑战
+                    </label>
+                </div>
+            </div>
+            <div class="add-record">
+                <button class="cta-button">创建新活动</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 页脚 -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>骑行冒险乐园</h3>
+                <p>将骑行之旅转化为有趣的竞争性冒险体验</p>
+            </div>
+            <div class="footer-column">
+                <h3>快速链接</h3>
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#how-it-works">工作原理</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#search">搜索活动</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>联系我们</h3>
+                <ul>
+                    <li>邮箱: info@cyclingadventure.com</li>
+                    <li>电话: +86 123 4567 8900</li>
+                    <li>地址: 北京市朝阳区骑行大道123号</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>关注我们</h3>
+                <ul>
+                    <li><a href="#">微信</a></li>
+                    <li><a href="#">微博</a></li>
+                    <li><a href="#">抖音</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 骑行冒险乐园. 保留所有权利.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // 简单的交互功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // CTA按钮点击事件
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function() {
+                window.location.href = 'https://juliet83232.softr.app';
+            });
+        });
+    });
+</script>
+</body>
+</html>
